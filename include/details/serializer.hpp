@@ -1,0 +1,10 @@
+//
+// Created by cenka on 1/6/2024.
+//
+
+#ifndef JSON_CONVERTER_SERIALIZER_HPP
+#define JSON_CONVERTER_SERIALIZER_HPP
+
+
+
+#endif //JSON_CONVERTER_SERIALIZER_HPP
