@@ -6,17 +6,14 @@
 #define JSON_CONVERTER_JSON_HPP
 
 #include <iostream>
-#include "details/defines.hpp"
 #include "details/JsonPair.hpp"
+#include "details/JsonReaderStageEnum.hpp"
 
 template <typename T>
 class Json {
 public:
     Json() = default;
     std::string serialize(T obj) {
-
-
-
         return std::to_string(obj);
     }
     T deserialize(std::string json) {
@@ -25,9 +22,21 @@ public:
 
 private:
 
-    JsonPair jsonReader(std::string jsonInput)
+    JsonPair jsonReader(std::string& jsonInput)
     {
+        if (jsonInput[0] != ASCII_JSON_OPENING_CURLY_BRACKET)
+        {
+            throw std::bad_cast();
+        }
 
+        auto jsonKeeper = JsonReaderRecordKeeper();
+
+
+
+        for(auto c : jsonInput)
+        {
+
+        }
     }
 
 
