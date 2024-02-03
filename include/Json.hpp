@@ -24,19 +24,7 @@ private:
 
     JsonPair jsonReader(std::string& jsonInput)
     {
-        if (jsonInput[0] != ASCII_JSON_OPENING_CURLY_BRACKET)
-        {
-            throw std::bad_cast();
-        }
 
-        auto jsonKeeper = JsonReaderRecordKeeper();
-
-
-
-        for(auto c : jsonInput)
-        {
-
-        }
     }
 
 
