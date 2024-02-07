@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "details/JsonPair.hpp"
-#include "details/JsonReaderStageEnum.hpp"
+#include "details/JsonReader.hpp"
 
 template <typename T>
 class Json {

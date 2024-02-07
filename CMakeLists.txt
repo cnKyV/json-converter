@@ -8,4 +8,4 @@ add_executable(json_converter main.cpp
         include/Json.cpp
         include/Json.hpp
         include/details/JsonPair.hpp
-        include/details/JsonReaderStageEnum.hpp)
+        include/details/JsonReader.hpp)

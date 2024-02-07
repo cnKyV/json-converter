@@ -2,8 +2,8 @@
 // Created by cenka on 2/2/2024.
 //
 
-#ifndef JSON_CONVERTER_JSONREADERSTAGEENUM_HPP
-#define JSON_CONVERTER_JSONREADERSTAGEENUM_HPP
+#ifndef JSON_CONVERTER_JSONREADER_HPP
+#define JSON_CONVERTER_JSONREADER_HPP
 
 #include <iostream>
 #include <vector>
@@ -11,7 +11,7 @@
 #include "defines.hpp"
 
 template <typename T>
-class JsonReaderRecordKeeper{
+class JsonReader{
 size_t indent;
 size_t arrayElement;
 
@@ -47,16 +47,9 @@ public:
                 case ASCII_JSON_OPENING_CURLY_BRACKET:
                     openingCurlyBracketRead = true;
                     closingCurlyBracketRead = false;
-                    isKey = true;
 
-                    if (indent > 0)
-                    {
+                    if (openingCurlyBracketRead) ++indent;
 
-                    }
-                    else
-                    {
-
-                    }
 
                     break;
 
@@ -64,10 +57,8 @@ public:
                     closingCurlyBracketRead = true;
                     openingCurlyBracketRead = false;
 
-                    if (indent > 0)
-                    {
+                    if (indent > 0 && closingCurlyBracketRead) --indent;
 
-                    }
                     else
                     {
 
@@ -109,7 +100,15 @@ public:
                     break;
 
                 case ASCII_JSON_COMMA:
+                    if (inArray)
+                    {
 
+                    }
+
+                    else
+                    {
+
+                    }
                     break;
 
                 default:
@@ -140,4 +139,4 @@ public:
 
 };
 
-#endif //JSON_CONVERTER_JSONREADERSTAGEENUM_HPP
+#endif //JSON_CONVERTER_JSONREADER_HPP
