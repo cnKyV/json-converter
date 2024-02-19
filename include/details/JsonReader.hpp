@@ -9,26 +9,37 @@
 #include <vector>
 #include <map>
 #include "defines.hpp"
+#include "JsonPair.hpp"
+#include "JsonSchema.hpp"
+#include "JsonValueTypes.hpp"
 
 template <typename T>
 class JsonReader{
 size_t indent;
 size_t arrayElement;
 
-bool isKey = NULL;
-bool inArray = NULL;
-bool inObject = NULL;
-bool isCommaObjectSeperator = NULL;
-bool closingCurlyBracketRead = NULL;
-bool openingCurlyBracketRead = NULL;
+bool isKey = true;
+bool inArray = false;
+bool inObject = false;
+bool isCommaObjectSeperator = false;
+bool closingCurlyBracketRead = false;
+bool openingCurlyBracketRead = true;
+bool beginRead = false;
+bool readValue = false;
 
-std::vector<char> currentWord;
+std::string currentWord;
 std::vector<std::string> previousKeysList;
+std::vector<std::variant<int, double, std::string, T>> previousValuesList;
 std::variant<int, double, std::string, T> valueType;
 
 enum class CurrentStage{
 Is
-};
+}   ;
+
+void ResetCurrentWord()
+{
+
+}
 
 public:
     void ReceiveInput(std::string& input)
@@ -37,9 +48,6 @@ public:
         {
             throw std::bad_cast();
         }
-
-
-
 
         for(char& c : input)
         {
@@ -67,24 +75,36 @@ public:
                     break;
 
                 case ASCII_JSON_DOUBLE_QUOTE:
-                    if (isKey)
+                    if (!beginRead)
                     {
+                        beginRead = true;
+                        if (readValue)
+                        {
 
+                        }
                     }
+                    else if(beginRead && currentWord.back() == '\\' || !currentWord.empty()) continue;
                     else
                     {
-
+                        beginRead = false;
+                        ResetCurrentWord();
                     }
-
 
                     break;
 
                 case ASCII_JSON_COLON:
-                    isKey = false;
+                    if (isKey)
+                    {
+                        isKey = false;
+                        readValue = true;
+                    }
+                    else if(!isKey && beginRead) continue;
+                    else isKey = true;
                     break;
 
                 case ASCII_JSON_OPENING_SQUARE_BRACKETS:
                     inArray = true;
+
                     break;
 
                 case ASCII_JSON_CLOSING_SQUARE_BRACKETS:
@@ -112,6 +132,8 @@ public:
                     break;
 
                 default:
+
+
 
                     break;
 
