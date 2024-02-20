@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <variant>
 #include <map>
 #include "defines.hpp"
 #include "JsonPair.hpp"
@@ -30,15 +31,34 @@ bool readValue = false;
 std::string currentWord;
 std::vector<std::string> previousKeysList;
 std::vector<std::variant<int, double, std::string, T>> previousValuesList;
-std::variant<int, double, std::string, T> valueType;
+JsonTypeValues valueType;
 
 enum class CurrentStage{
 Is
-}   ;
+};
 
 void ResetCurrentWord()
 {
+    if (isKey) previousKeysList.push_back(currentWord);
+    else
+        switch (valueType) {
+            case STRING:
+                previousValuesList.emplace_back(currentWord);
+                break;
 
+            case INT:
+                previousValuesList.emplace_back(std::stoi(currentWord));
+                break;
+
+            case DECIMAL:
+                previousValuesList.emplace_back(std::stod(currentWord));
+                break;
+
+            case OBJECT:
+                break;
+        }
+
+    currentWord = "";
 }
 
 public:
@@ -80,7 +100,8 @@ public:
                         beginRead = true;
                         if (readValue)
                         {
-
+                            valueType = STRING;
+                            readValue = false;
                         }
                     }
                     else if(beginRead && currentWord.back() == '\\' || !currentWord.empty()) continue;
@@ -140,13 +161,6 @@ public:
 
             }
         }
-    }
-
-    CurrentStage GetStage()
-    {
-        CurrentStage stage;
-
-        return stage;
     }
 
     int GetIndent()

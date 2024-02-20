@@ -9,12 +9,13 @@
 #include <string>
 #include "defines.hpp"
 
-struct JsonTypeValues
+enum JsonTypeValues
 {
-const std::string String = "String";
-const std::string Int = "int";
-const std::string Float = "float";
-};
+STRING = 0,
+INT = 1,
+DECIMAL = 2,
+OBJECT = 3
+}
 
 
 
